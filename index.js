@@ -1,19 +1,39 @@
-const text = document.querySelector('#text');
-const resultContainer = document.querySelector('.result');
-const button = document.querySelector('button');
+const textArea = document.querySelector('#text');
+const result = document.querySelector('.result');
+const copy_button = document.querySelector('.copy_text');
 const success = document.querySelector('.success_container');
+const types = document.querySelectorAll('.type');
 
-text.addEventListener('input', (e) => {
-    resultContainer.textContent = e.target.value;
+let text = "";
+
+textArea.addEventListener('input', (e) => {
+    text = e.target.value;
 })
 
-button.addEventListener('click', () => {
-    navigator.clipboard.writeText(resultContainer.textContent.toUpperCase()).then(() => {
+types.forEach(element => {
+    element.addEventListener('click', () => {
+        switch (element.role) {
+            case 'mayuscula':
+                text = text.toUpperCase();
+                result.textContent = text;
+                break;
+            case 'minuscula':
+                text = text.toLowerCase();
+                result.textContent = text;
+                break;
+            default:
+                break;
+        }
+    })
+})
+
+copy_button.addEventListener('click', () => {
+    navigator.clipboard.writeText(text).then(() => {
         success.classList.add('success')
         success.textContent = "Texto copiado satisfactoriamente."
         setTimeout(() => {
             success.classList.remove('success')
             success.textContent = '';
-        },3000)
+        }, 3000)
     })
 })
